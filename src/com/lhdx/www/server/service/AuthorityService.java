@@ -1,39 +1,28 @@
 package com.lhdx.www.server.service;
 
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
-
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
+import com.lhdx.www.server.model.weixin.WeixinOauth2Token;
+import com.lhdx.www.server.util.SystemParam;
+import com.sina.sae.fetchurl.SaeFetchurl;
+import com.sina.sae.memcached.SaeMemcache;
+
 @Service("authorityService")
 public class AuthorityService {
-//	private SaeMemcache mc;
-	private Map mc;
+	private SaeMemcache mc;
 
 	public AuthorityService() {
-//		mc = new SaeMemcache();
-//		mc.init();
-		mc = new HashMap<String,String>();
+		mc = new SaeMemcache();
+		mc.init();
 	}
 
-//	public String getToken() {
-//		String token = mc.get("access_token");
-//		if (token == null || "".equals(token)) {
-//			token = getAccessToken();
-//			mc.set("access_token", token, 60);
-//		}
-//		return token;
-//	}
-
 	public String getToken() {
-		String token = (String) mc.get("access_token");
+		String token = mc.get("access_token");
 		if (token == null || "".equals(token)) {
 			token = getAccessToken();
-			mc.put("access_token", token);
+			mc.set("access_token", token, 60);
 		}
 		return token;
 	}
@@ -46,27 +35,11 @@ public class AuthorityService {
 				+ APPID + "&secret=" + APPSECRET;
 		String accessToken = null;
 		try {
-			URL urlGet = new URL(url);
-			HttpURLConnection http = (HttpURLConnection) urlGet
-					.openConnection();
-
-			http.setRequestMethod("GET"); // 必须是get方式请求
-			http.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			http.setDoOutput(true);
-			http.setDoInput(true);
-			System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
-			System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
-			http.connect();
-
-			InputStream is = http.getInputStream();
-			int size = is.available();
-			byte[] jsonBytes = new byte[size];
-			is.read(jsonBytes);
-			String message = new String(jsonBytes, "UTF-8");
-
-			JSONObject demoJson = new JSONObject(message);
-			accessToken = demoJson.getString("access_token");
+			SaeFetchurl fetchUrl = new SaeFetchurl();
+			fetchUrl.setMethod("get");
+			String message = fetchUrl.fetch(url);
+			JSONObject json = new JSONObject(message);
+			accessToken = json.getString("access_token");
 
 			System.out.println(message);
 		} catch (Exception e) {
@@ -83,47 +56,50 @@ public class AuthorityService {
 				+ APPID + "&secret=" + APPSECRET;
 		String accessToken = null;
 		try {
-			URL urlGet = new URL(url);
-			HttpURLConnection http = (HttpURLConnection) urlGet
-					.openConnection();
-
-			http.setRequestMethod("GET"); // 必须是get方式请求
-			http.setRequestProperty("Content-Type",
-					"application/x-www-form-urlencoded");
-			http.setDoOutput(true);
-			http.setDoInput(true);
-			System.setProperty("sun.net.client.defaultConnectTimeout", "30000");// 连接超时30秒
-			System.setProperty("sun.net.client.defaultReadTimeout", "30000"); // 读取超时30秒
-			http.connect();
-
-			InputStream is = http.getInputStream();
-			int size = is.available();
-			byte[] jsonBytes = new byte[size];
-			is.read(jsonBytes);
-			String message = new String(jsonBytes, "UTF-8");
-
+			SaeFetchurl fetchUrl = new SaeFetchurl();
+			fetchUrl.setMethod("get");
+			String message = fetchUrl.fetch(url);
 			JSONObject demoJson = new JSONObject(message);
 			accessToken = demoJson.getString("access_token");
-
 			System.out.println(message);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		System.out.println(accessToken); 
 	}
-	
-	public void  action_PostProcessHttpClient(String posturl,StringBuffer jsonsb) throws Exception {
-		DefaultHttpClient httpClient = new DefaultHttpClient();
-		HttpPost httpPost = new HttpPost(posturl);
-		//设置内容类型为application/json
-		        httpPost.addHeader("content-type", "application/json");
-		        //将JSON进行UTF-8编码,以便传输中文
-		        StringEntity se = new StringEntity(jsonsb.toString(),"UTF-8");
-		        //设置内容类型
-		        se.setContentType("text/json");
-		        se.setContentEncoding(new BasicHeader("content-type", "application/json"));
-		        httpPost.setEntity(se);
-		        HttpResponse response = httpClient.execute(httpPost);
-		        //System.out.println("getStatusLine = "+response.getStatusLine());
+	public WeixinOauth2Token getOauth2AccessToken(String code) {
+		WeixinOauth2Token wat = null;
+		// 拼接请求地址
+		String requestUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+		requestUrl = requestUrl.replace("APPID", SystemParam.APPID);
+		requestUrl = requestUrl.replace("SECRET", SystemParam.APPSECRET);
+		requestUrl = requestUrl.replace("CODE", code);
+		// 获取网页授权凭证
+		String accessToken = null;
+		SaeFetchurl fetchUrl = new SaeFetchurl();
+		fetchUrl.setMethod("get");
+		String message = fetchUrl.fetch(requestUrl);
+		JSONObject jsonObject;
+		try {
+			jsonObject = new JSONObject(message);
+			accessToken = jsonObject.getString("access_token");
+			if (null != jsonObject) {
+				try {
+					wat = new WeixinOauth2Token();
+					wat.setAccessToken(jsonObject.getString("access_token"));
+					wat.setExpiresIn(jsonObject.getInt("expires_in"));
+					wat.setRefreshToken(jsonObject.getString("refresh_token"));
+					wat.setOpenId(jsonObject.getString("openid"));
+					wat.setScope(jsonObject.getString("scope"));
+				} catch (Exception e) {
+					
+				}
+			}
+		} catch (JSONException e1) {
+			e1.printStackTrace();
 		}
+		
+		return wat;
+	}
+	
 }

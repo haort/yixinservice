@@ -22,17 +22,7 @@
 		<script type="text/javascript" src="<%=request.getContextPath()%>/js/msgbox.js"></script>
 		<script type="text/javascript">
 			$(document).ready(function() {
-			$.ajax({     
-		        type: 'post',     
-		        url: "<%=request.getContextPath()%>/service/getToken.do",
-		        cache: false,  
-		        success: function(data){ 
-		        	alert(data);
-		        },     
-		        error: function(){     
-		            return;     
-		        }     
-		    }); 
+			alert(${wxId}) 
 			});
 		</script>
 	</head>
@@ -44,7 +34,7 @@
 			<%@include file="/WEB-INF/views/common/header.jsp"%>
 			<!-- header wrapper ends -->
 
-			
+			${wxId}
 			<!-- footer wrapper starts -->
 			<%@include file="/WEB-INF/views/common/footer.jsp"%>
 			<!-- footer wrapper ends -->

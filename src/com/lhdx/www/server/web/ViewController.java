@@ -9,12 +9,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lhdx.www.server.model.weixin.WeixinOauth2Token;
 import com.lhdx.www.server.service.AuthorityService;
 
 
 @Controller
 @RequestMapping(value = "/service")
 public class ViewController {
+	@Resource(name="authorityService")
+	private AuthorityService authorityService;
 	
 	@RequestMapping(value = "/getProduct", method = RequestMethod.GET)
 	public ModelAndView getProduct(int productId) {
@@ -45,11 +48,11 @@ public class ViewController {
 	}
 
 	@RequestMapping(value = "/getJfsc", method = RequestMethod.GET)
-	public ModelAndView getJfsc(String wxId) {
+	public ModelAndView getJfsc(String code) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("jfsc");
-		if (wxId != null && !"".equals(wxId)) {
-			mv.addObject("wxId", wxId);
+		if (code != null && !"".equals(code)) {
+			mv.addObject("wxId", code);
 		}
 		return mv;
 	}
@@ -168,9 +171,13 @@ public class ViewController {
 	}
 	
 	@RequestMapping(value = "/getTest", method = RequestMethod.GET)
-	public ModelAndView getTest() {
+	public ModelAndView getTest(String code) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("test");
+		WeixinOauth2Token wo = authorityService.getOauth2AccessToken(code);
+		if (wo != null) {
+			mv.addObject("wxId", wo.getOpenId());
+		}
 		return mv;
 	}
 	

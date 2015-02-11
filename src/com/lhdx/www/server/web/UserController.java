@@ -16,9 +16,7 @@ import com.lhdx.www.server.service.UserService;
 @Controller
 @RequestMapping(value = "/service")
 public class UserController {
-	
-	@Resource(name="authorityService")
-	private AuthorityService authorityService;
+
 
 	@Resource(name = "userService")
 	private UserService userService;
@@ -57,14 +55,6 @@ public class UserController {
 	Map ifqd(@RequestParam("wxId") String wxId) {
 		Map<String, Object> map = userService.ifDq(wxId);
 		return map;
-	}
-
-	
-	
-	@RequestMapping(value = "/getToken", method = RequestMethod.POST)
-	public @ResponseBody
-	String getToken() {
-		return authorityService.getToken();
 	}
 	
 }

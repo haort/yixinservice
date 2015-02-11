@@ -1,6 +1,7 @@
-#Thu Jan 29 14:42:27 CST 2015
+#Wed Feb 11 12:11:40 CST 2015
 eclipse.preferences.version=1
 encoding//WebRoot/WEB-INF/views/common/css.jsp=UTF-8
 encoding//WebRoot/WEB-INF/views/common/footer.jsp=UTF-8
 encoding//WebRoot/WEB-INF/views/common/js.jsp=UTF-8
+encoding//src/com/lhdx/www/server/model/weixin/WeixinOauth2Token.java=UTF-8
 encoding/<project>=UTF-8
