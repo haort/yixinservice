@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-module
+  type="WEB"
+  name="yixinservice"
+  id="myeclipse.1405859544337"
+  context-root="/yixinservice"
+  j2ee-spec="5.0"
+  archive="yixinservice.war">
+  <attributes>
+    <attribute name="webrootdir" value="/WebRoot" />
+  </attributes>
+</project-module>
+
