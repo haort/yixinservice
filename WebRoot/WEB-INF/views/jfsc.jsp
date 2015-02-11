@@ -27,7 +27,6 @@
 				<!-- portfolio wrapper starts -->
 
 				<div class="portfolioTwoWrapper">
-				<
 					<!-- portfolio item starts  -->
 					<div class="portfolioTwoItemWrapper">
 						<a href="<%=request.getContextPath()%>/service/getProduct.do?productId=0"
