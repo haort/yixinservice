@@ -5,19 +5,20 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lhdx.www.server.model.User;
 import com.lhdx.www.server.model.weixin.WeixinOauth2Token;
 import com.lhdx.www.server.service.AuthorityService;
-
+import com.lhdx.www.server.service.UserService;
 
 @Controller
 @RequestMapping(value = "/service")
 public class ViewController {
-	@Resource(name="authorityService")
+	@Resource(name = "authorityService")
 	private AuthorityService authorityService;
+	@Resource(name = "userService")
+	private UserService userService;
 	
 	@RequestMapping(value = "/getProduct", method = RequestMethod.GET)
 	public ModelAndView getProduct(int productId) {
@@ -76,7 +77,7 @@ public class ViewController {
 		}
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getAdCkcontact", method = RequestMethod.GET)
 	public ModelAndView getAdCkcontact(String wxId) {
 		ModelAndView mv = new ModelAndView();
@@ -86,7 +87,7 @@ public class ViewController {
 		}
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getNotice", method = RequestMethod.GET)
 	public ModelAndView getNotice(String wxId) {
 		ModelAndView mv = new ModelAndView();
@@ -96,16 +97,18 @@ public class ViewController {
 		}
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getContact", method = RequestMethod.GET)
-	public ModelAndView getContact(String wxId) {
+	public ModelAndView getContact(String code) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("contact");
-		if (wxId != null && !"".equals(wxId)) {
-			mv.addObject("wxId", wxId);
+		WeixinOauth2Token wo = authorityService.getOauth2AccessToken(code);
+		if (wo != null) {
+			mv.addObject("wxId", wo.getOpenId());
 		}
 		return mv;
 	}
+
 	@RequestMapping(value = "/getDc", method = RequestMethod.GET)
 	public ModelAndView getDc(String wxId) {
 		ModelAndView mv = new ModelAndView();
@@ -115,7 +118,7 @@ public class ViewController {
 		}
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getDocontact", method = RequestMethod.GET)
 	public ModelAndView getDocontact(String wxId) {
 		ModelAndView mv = new ModelAndView();
@@ -125,21 +128,21 @@ public class ViewController {
 		}
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getHelp", method = RequestMethod.GET)
 	public ModelAndView getHelp() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("help");
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getIndex", method = RequestMethod.GET)
 	public ModelAndView getIndex() {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("index");
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getFbNotice", method = RequestMethod.GET)
 	public ModelAndView getFbNotice(String wxId) {
 		ModelAndView mv = new ModelAndView();
@@ -149,17 +152,18 @@ public class ViewController {
 		}
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getQd", method = RequestMethod.GET)
-	public ModelAndView getQd(String wxId) {
+	public ModelAndView getQd(String code) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("qd");
-		if (wxId != null && !"".equals(wxId)) {
-			mv.addObject("wxId", wxId);
+		WeixinOauth2Token wo = authorityService.getOauth2AccessToken(code);
+		if (wo != null) {
+			mv.addObject("wxId", wo.getOpenId());
 		}
 		return mv;
 	}
-	
+
 	@RequestMapping(value = "/getReg", method = RequestMethod.GET)
 	public ModelAndView getReg(String wxId) {
 		ModelAndView mv = new ModelAndView();
@@ -169,16 +173,33 @@ public class ViewController {
 		}
 		return mv;
 	}
-	
-	@RequestMapping(value = "/getTest", method = RequestMethod.GET)
-	public ModelAndView getTest(String code) {
+
+	@RequestMapping(value = "/getView", method = RequestMethod.GET)
+	public ModelAndView getView(String code, String state) {
 		ModelAndView mv = new ModelAndView();
-		mv.setViewName("test");
-		WeixinOauth2Token wo = authorityService.getOauth2AccessToken(code);
-		if (wo != null) {
-			mv.addObject("wxId", wo.getOpenId());
+		if (code != null) {
+			WeixinOauth2Token wo = authorityService.getOauth2AccessToken(code);
+			if (wo != null) {
+				User u = userService.findUserByWxId(wo.getOpenId());
+				mv.addObject("wxId", wo.getOpenId());
+				if(u!=null){
+					if(state != null&&!"ad".equals(state)){
+						mv.setViewName(state);
+					}else if(state != null&&"ad".equals(state)){
+						if(u.getAuth()!=null&&"admin1".equals(u.getAuth())){
+							mv.setViewName("ad");
+						}else{
+							mv.setViewName("notad");
+						}
+					}else{
+						mv.setViewName("404");
+					}
+				}else{
+					mv.setViewName("reg");
+				}
+			}
 		}
 		return mv;
 	}
-	
+
 }

@@ -3,7 +3,7 @@
   type="WEB"
   name="yixinservice"
   id="myeclipse.1405859544337"
-  context-root="/yixinservice"
+  context-root="/lhdx"
   j2ee-spec="5.0"
   archive="yixinservice.war">
   <attributes>

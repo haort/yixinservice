@@ -47,6 +47,10 @@ public class UserService {
 			return "false";
 		}
 	}
+	
+	public User findUserByWxId(String wxId) {
+		return  userDao.findUserByWxId(wxId);
+	}
 
 	public Map ifDq(String wxId) {
 		Map<String, Object> map = new HashMap<String, Object>();
