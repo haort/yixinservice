@@ -11,7 +11,40 @@
 		<!-- meta tags end -->
 		<%@include file="/WEB-INF/views/common/css.jsp"%>
 		<%@include file="/WEB-INF/views/common/js.jsp"%>
-
+		<script type="text/javascript">
+			$(document).ready(function() {
+			$.ajax({     
+		        type: 'post',     
+		        url: "<%=request.getContextPath()%>/service/findProducts.do",
+		        cache: false,       
+		        dataType: 'json',     
+		        success: function(data){ 
+		        	var products="";   
+		            jQuery.each(data, function(i,item){
+		            products+="<div class='portfolioTwoItemWrapper'>";
+						products+="<a href='<%=request.getContextPath()%>/service/getProduct.do?productId="+item.productId+"'";
+						products+="class='portfolioTwoItemImageWrapper'>";
+						products+="<img src='<%=request.getContextPath()%>/images/"+item.productPic+"' alt='' />";
+						products+="</a>";
+						products+="<div class='portfolioTwoItemInfoWrapper'>";
+						products+=	"<h4 class='portfolioTwoItemTitle'>";
+						products+=		item.productName+"<font color='red'>("+item.productScore+")积分</font>";
+						products+=	"</h4>";
+						products+="</div>";
+					products+="</div>";
+		            
+		            });   
+		           
+		            $("#products").html(products);
+		        },     
+		        error: function(){     
+		            return;     
+		        }     
+		    }); 
+		
+			});
+		
+		</script>
 	</head>
 
 	<body>
@@ -26,33 +59,8 @@
 			<div class="sectionBreak"></div>
 				<!-- portfolio wrapper starts -->
 
-				<div class="portfolioTwoWrapper">
-				
+				<div class="portfolioTwoWrapper" id="products">
 					<!-- portfolio item starts  -->
-					<div class="portfolioTwoItemWrapper">
-						<a href="<%=request.getContextPath()%>/service/getProduct.do?productId=0"
-							class="portfolioTwoItemImageWrapper" id="product_1"><img
-								src="<%=request.getContextPath()%>/images/product_1.jpg" alt="" />
-						</a>
-						<div class="portfolioTwoItemInfoWrapper">
-							<h4 class="portfolioTwoItemTitle">
-								移动电源：500积分
-							</h4>
-						</div>
-					</div>
-					<!-- portfolio item ends -->
-					<!-- portfolio item starts  -->
-					<div class="portfolioTwoItemWrapper">
-						<a href="<%=request.getContextPath()%>/service/getProduct.do?productId=1"
-							class="portfolioTwoItemImageWrapper" id="product_2"><img
-								src="<%=request.getContextPath()%>/images/product_2.jpg" alt="" />
-						</a>
-						<div class="portfolioTwoItemInfoWrapper">
-							<h4 class="portfolioTwoItemTitle">
-								羊年挂历：10积分
-							</h4>
-						</div>
-					</div>
 					<!-- portfolio item ends -->
 				</div>
 				<!-- portfolio wrapper ends -->

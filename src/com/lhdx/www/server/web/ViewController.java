@@ -7,9 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.lhdx.www.server.model.Product;
 import com.lhdx.www.server.model.User;
 import com.lhdx.www.server.model.weixin.WeixinOauth2Token;
 import com.lhdx.www.server.service.AuthorityService;
+import com.lhdx.www.server.service.ProductService;
 import com.lhdx.www.server.service.UserService;
 
 @Controller
@@ -19,24 +21,20 @@ public class ViewController {
 	private AuthorityService authorityService;
 	@Resource(name = "userService")
 	private UserService userService;
+	@Resource(name = "productService")
+	private ProductService productService;
 	
 	@RequestMapping(value = "/getProduct", method = RequestMethod.GET)
 	public ModelAndView getProduct(int productId) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("product");
-		if (productId == 0) {
-			mv.addObject("productPic", "product_1.jpg");
-			mv.addObject("productName", "移动电源");
-			mv.addObject("productScore", "500");
-			mv
-					.addObject(
-							"productDes",
-							"产品名称：MIUI/小米 10400mAh移动电...品牌: MIUI/小米型号: 10400mAh移动电源 NDY-02-AD颜色分类: 蓝色 金色 红色 银色电池容量: 10001mAh(含)-15000mAh(含)电池类型: 锂离子电池");
-		} else if (productId == 1) {
-			mv.addObject("productPic", "product_2.jpg");
-			mv.addObject("productName", "羊年挂历");
-			mv.addObject("productScore", "10");
-			mv.addObject("productDes", "太湖世家定制羊年挂历，祝广大业主新春快乐");
+		Product product = productService.findProductById(productId);
+		if(product!=null){
+			mv.addObject("productPic",product.getProductPic());
+			mv.addObject("productName", product.getProductName());
+			mv.addObject("productScore", product.getProductScore());
+			mv.addObject("productDes", product.getProductDes());
+			mv.addObject("num", product.getNum());
 		}
 		return mv;
 	}
@@ -52,9 +50,6 @@ public class ViewController {
 	public ModelAndView getJfsc(String code) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("jfsc");
-		if (code != null && !"".equals(code)) {
-			mv.addObject("wxId", code);
-		}
 		return mv;
 	}
 

@@ -11,6 +11,11 @@
 		<!-- meta tags end -->
 		<%@include file="/WEB-INF/views/common/css.jsp"%>
 		<%@include file="/WEB-INF/views/common/js.jsp"%>
+		<script type="text/javascript">
+		$(document).ready(function() {
+			$("#pProduct").colorbox({html:"<h1>Welcome</h1>"});
+		});
+		</script>
 	</head>
 
 	<body>
@@ -37,18 +42,24 @@
 					</p>
 					<p>
 						兑换需要
-						<font color="red">${productScore}</font>积分
+						<font color="red">${productScore}</font>积分，剩余<font color="red">${num}</font>个
 					</p>
 					<div class="pageBreak"></div>
 				</div>
 				<div class="pageBreak"></div>
 				<div class="singleProjectItemButtonsWrapper">
 					<p>
-						<a href="javascript:confirm('是否删除？');"
+						<a id="pProduct" href="#leavePM"
 							class="buttonWrapper buttonOrange">兑换</a>
 					</p>
 					<p>
 					</p>
+				</div>
+				
+				<div style='display:none'>
+					<div id='#leavePM'>
+					<p><strong>This content comes from a hidden element on this page.</strong></p>
+					</div>
 				</div>
 				
 			</div>
