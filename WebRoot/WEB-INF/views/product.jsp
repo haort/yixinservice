@@ -13,7 +13,51 @@
 		<%@include file="/WEB-INF/views/common/js.jsp"%>
 		<script type="text/javascript">
 		$(document).ready(function() {
-			$("#pProduct").colorbox({html:"<h1>Welcome</h1>"});
+		$("#pProduct").click(function(){
+		  if($("#nowScore").html()>=${productScore}){
+		 	 $("#pProduct").colorbox({inline:true, width:"80%"});
+		  }else{
+		  	 alert("您当前积分不够，每日签到即可获得积分！");
+		  }
+		});
+		function getJf(){
+			$.ajax({     
+				type: 'post',     
+				url: "<%=request.getContextPath()%>/service/ifqd.do",
+				cache: false,  
+				data: "wxId=${wxId}",     
+				success: function(data){ 
+					if("true"==data.qd){
+					$("#nowScore").html(data.jf);
+					}
+				}   
+			}); 
+		}
+		getJf();
+		$('#contactForm').validate( {
+					submitHandler : function(form) {
+						var formData = $("#contactForm").serialize();
+						$.ajax( {
+							type : "POST",
+							url : "<%=request.getContextPath()%>/service/exchangeProduct.do",
+							cache : false,
+							data : formData,
+							success : onSuccess
+						});
+		
+					}
+				});
+		
+				function onSuccess(data, status) {
+				 $.msgbox.show({
+				        message: '提交成功！',
+				        icon: 'ok',
+				        timeOut: 1000
+				    });
+					$('#contactForm')[0].reset();
+					$("#pProduct").colorbox.close();
+					getJf();
+				}
 		});
 		</script>
 	</head>
@@ -35,32 +79,69 @@
 				<!-- page content wrapper starts -->
 				<div class="pageContentWrapper singleProjectContentWrapper">
 					<h3 class="pageTitle">
-						${productName}
+						${productName}，剩余<font color="red">${num}</font>个
 					</h3>
 					<p>
 						${productDes}
 					</p>
 					<p>
 						兑换需要
-						<font color="red">${productScore}</font>积分，剩余<font color="red">${num}</font>个
+						<font color="red">${productScore}</font>积分,您当前积分为<font color="red" id="nowScore">${nowScore}</font>分
 					</p>
 					<div class="pageBreak"></div>
 				</div>
 				<div class="pageBreak"></div>
 				<div class="singleProjectItemButtonsWrapper">
 					<p>
-						<a id="pProduct" href="#leavePM"
+						<a id="pProduct" href="#inline_content"
 							class="buttonWrapper buttonOrange">兑换</a>
 					</p>
 					<p>
 					</p>
 				</div>
 				
-				<div style='display:none'>
-					<div id='#leavePM'>
-					<p><strong>This content comes from a hidden element on this page.</strong></p>
-					</div>
-				</div>
+		<div style='display:none'>
+			<div id='inline_content' style='padding:10px; background:#fff;'>
+			<h4 class="contactTitle">
+						请准确填写以便登记发放:
+			</h4>
+			<form method="post" class="contactForm" id="contactForm">
+					<input type="hidden" name="wxId"id="wxId" value="${wxId}">
+					<input type="hidden" name="productScore"id="productScore" value="${productScore}">
+					<input type="hidden" name="productId"id="productId" value="${productId}">
+						<fieldset>
+							<div class="formFieldWrapper">
+								<label for="contactNameField">
+									姓名:
+								</label>
+								<input type="text" name="name" value=""
+									class="contactField required" id="contactNameField"
+									data-placeholder="" />
+							</div>
+							<div class="formFieldWrapper">
+								<label for="contactEmailField">
+									联系号码:
+								</label>
+								<input type="text" name="phone" value=""
+									class="contactField required" id="contactEmailField"
+									data-placeholder="" />
+							</div>
+							<div class="formFieldWrapper">
+								<label for="contactEmailField">
+									地址:
+								</label>
+								<input type="text" name="addr" value=""
+									class="contactField required" id="contactEmailField"
+									data-placeholder="" />
+							</div>
+							<div class="formSubmitButtonErrorsWrapper">
+								<input type="submit" class="buttonWrapper contactSubmitButton"
+									id="submit" value="提交" data-form-id="contactForm" />
+							</div>
+						</fieldset>
+					</form>
+			</div>
+		</div>
 				
 			</div>
 			<!-- page wrapper ends -->

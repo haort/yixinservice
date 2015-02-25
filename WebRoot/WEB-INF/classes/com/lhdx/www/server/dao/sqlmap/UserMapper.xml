@@ -40,7 +40,8 @@
 		update user set
 		name = #{user.name},
 		phone = #{user.phone},
-		addr = #{user.addr}
+		addr = #{user.addr},
+		jf = #{user.jf}
 		where id = #{user.id}
     </update>
 	

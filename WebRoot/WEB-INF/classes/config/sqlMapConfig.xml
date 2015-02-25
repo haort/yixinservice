@@ -29,6 +29,7 @@
 		<typeAlias alias="Notice" type="com.lhdx.www.server.model.Notice" />
 		<typeAlias alias="Dc" type="com.lhdx.www.server.model.Dc" />
 		<typeAlias alias="Product" type="com.lhdx.www.server.model.Product" />
+		<typeAlias alias="Porder" type="com.lhdx.www.server.model.Porder" />
 	</typeAliases>
 	<mappers>
 		<mapper resource="com/lhdx/www/server/dao/sqlmap/UserMapper.xml" />
@@ -36,5 +37,6 @@
 		<mapper resource="com/lhdx/www/server/dao/sqlmap/NoticeMapper.xml" />
 		<mapper resource="com/lhdx/www/server/dao/sqlmap/DcMapper.xml" />
 		<mapper resource="com/lhdx/www/server/dao/sqlmap/ProductMapper.xml" />
+		<mapper resource="com/lhdx/www/server/dao/sqlmap/PorderMapper.xml" />
 	</mappers>
 </configuration>

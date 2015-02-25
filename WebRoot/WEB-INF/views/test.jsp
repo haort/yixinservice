@@ -21,8 +21,8 @@
 		<script type="text/javascript" src="<%=request.getContextPath()%>/js/contact.js"></script>
 		<script type="text/javascript" src="<%=request.getContextPath()%>/js/msgbox.js"></script>
 		<script type="text/javascript">
-			$(document).ready(function() {
-			alert(${wxId}) 
+			$(document).ready(function(){
+				$(".inline").colorbox({inline:true, width:"50%"});
 			});
 		</script>
 	</head>
@@ -34,7 +34,12 @@
 			<%@include file="/WEB-INF/views/common/header.jsp"%>
 			<!-- header wrapper ends -->
 
-			${wxId}
+		<p><a class='inline' href="#inline_content">Inline HTML</a></p>
+		<div style='display:none'>
+			<div id='inline_content' style='padding:10px; background:#fff;'>
+			<p><strong>This content comes from a hidden element on this page.</strong></p>
+			</div>
+		</div>
 			<!-- footer wrapper starts -->
 			<%@include file="/WEB-INF/views/common/footer.jsp"%>
 			<!-- footer wrapper ends -->

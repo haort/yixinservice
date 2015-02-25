@@ -25,4 +25,15 @@ public class ProductController {
 		return productService.findProducts();
 	}
 	
+	@RequestMapping(value = "/exchangeProduct",method = RequestMethod.POST)
+	public @ResponseBody
+	String addContact(
+			@RequestParam("name") String name,
+			@RequestParam("phone") String phone,
+			@RequestParam("wxId") String wxId,
+			@RequestParam("productId") String productId,
+			@RequestParam(value = "addr", required = false)  String addr) {
+		productService.insertOrder(name, phone,wxId, productId,addr);
+		return "{success:true,msg:'保存成功!'}";
+	}
 }

@@ -12,6 +12,22 @@
 		<%@include file="/WEB-INF/views/common/css.jsp"%>
 		<%@include file="/WEB-INF/views/common/js.jsp"%>
 		<script type="text/javascript">
+		
+		function getJf(){
+			$.ajax({     
+				type: 'post',     
+				url: "<%=request.getContextPath()%>/service/ifqd.do",
+				cache: false,  
+				data: "wxId=${wxId}",     
+				success: function(data){ 
+					if("true"==data.qd){
+					$("#nowScore").html(data.jf);
+					}
+				}   
+			}); 
+		}
+		getJf();
+		
 			$(document).ready(function() {
 			$.ajax({     
 		        type: 'post',     
@@ -22,7 +38,7 @@
 		        	var products="";   
 		            jQuery.each(data, function(i,item){
 		            products+="<div class='portfolioTwoItemWrapper'>";
-						products+="<a href='<%=request.getContextPath()%>/service/getProduct.do?productId="+item.productId+"'";
+						products+="<a href='<%=request.getContextPath()%>/service/getProduct.do?productId="+item.productId+"&wxId=${wxId}"+"&nowScore=$('#nowScore').html()"+"'";
 						products+="class='portfolioTwoItemImageWrapper'>";
 						products+="<img src='<%=request.getContextPath()%>/images/"+item.productPic+"' alt='' />";
 						products+="</a>";
@@ -53,12 +69,18 @@
 			<!-- header wrapper starts -->
 			<%@include file="/WEB-INF/views/common/header.jsp"%>
 			<!-- header wrapper ends -->
+		 
 
 			<!-- page wrapper starts -->
 			<div class="pageWrapper portfolioTwoPageWrapper">
+			
+			<div class="alertBox alertBoxInfo alertBoxTextBreak">
+        	<p class="alertBoxContent">当前积分有<font color="red" id="nowScore">${nowScore}</font>分</p>
+        	<a href="" class="alertBoxButton"></a>
+        	</div>
+			
 			<div class="sectionBreak"></div>
 				<!-- portfolio wrapper starts -->
-
 				<div class="portfolioTwoWrapper" id="products">
 					<!-- portfolio item starts  -->
 					<!-- portfolio item ends -->

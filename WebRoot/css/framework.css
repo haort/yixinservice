@@ -52,7 +52,7 @@ body {
 	color: #fff;
 }
 
-header, footer, section, article, nav, button, a, p, img, ul, ol, blockquote, form, fieldset, textarea, input, label, iframe, code, pre {
+div,header, footer, section, article, nav, button, a, p, img, ul, ol, blockquote, form, fieldset, textarea, input, label, iframe, code, pre {
 	display: block;
 	overflow: hidden;
 	position: relative;

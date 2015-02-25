@@ -25,16 +25,19 @@ public class ViewController {
 	private ProductService productService;
 	
 	@RequestMapping(value = "/getProduct", method = RequestMethod.GET)
-	public ModelAndView getProduct(int productId) {
+	public ModelAndView getProduct(int productId,String wxId,String nowScore) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("product");
 		Product product = productService.findProductById(productId);
 		if(product!=null){
+			mv.addObject("productId",product.getProductId());
 			mv.addObject("productPic",product.getProductPic());
 			mv.addObject("productName", product.getProductName());
 			mv.addObject("productScore", product.getProductScore());
 			mv.addObject("productDes", product.getProductDes());
 			mv.addObject("num", product.getNum());
+			mv.addObject("wxId", wxId);
+			mv.addObject("nowScore", nowScore);
 		}
 		return mv;
 	}
@@ -47,9 +50,12 @@ public class ViewController {
 	}
 
 	@RequestMapping(value = "/getJfsc", method = RequestMethod.GET)
-	public ModelAndView getJfsc(String code) {
+	public ModelAndView getJfsc(String wxId) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("jfsc");
+		if (wxId != null && !"".equals(wxId)) {
+			mv.addObject("wxId", wxId);
+		}
 		return mv;
 	}
 
@@ -194,6 +200,13 @@ public class ViewController {
 				}
 			}
 		}
+		return mv;
+	}
+	
+	@RequestMapping(value = "/getTest", method = RequestMethod.GET)
+	public ModelAndView getTest() {
+		ModelAndView mv = new ModelAndView();
+		mv.setViewName("test");
 		return mv;
 	}
 
