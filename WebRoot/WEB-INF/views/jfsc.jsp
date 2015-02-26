@@ -36,7 +36,7 @@
 		        	var products="";   
 		            jQuery.each(data, function(i,item){
 		            products+="<div class='portfolioTwoItemWrapper'>";
-						products+="<a href='<%=request.getContextPath()%>/service/getProduct.do?productId="+item.productId+"&wxId=${wxId}"+"&nowScore=$('#nowScore').html()"+"'";
+						products+="<a href='<%=request.getContextPath()%>/service/getProduct.do?productId="+item.productId+"&wxId=${wxId}&nowScore="+$('#nowScore').html()+"'";
 						products+="class='portfolioTwoItemImageWrapper'>";
 						products+="<img src='<%=request.getContextPath()%>/images/"+item.productPic+"' alt='' />";
 						products+="</a>";
@@ -46,7 +46,7 @@
 						products+=	"</h4>";
 						products+="</div>";
 					products+="</div>";
-		            
+
 		            });   
 		           
 		            $("#products").html(products);
@@ -67,17 +67,21 @@
 			<!-- header wrapper starts -->
 			<%@include file="/WEB-INF/views/common/header.jsp"%>
 			<!-- header wrapper ends -->
-
+			<div class="alertBox alertBoxInfo alertBoxTextBreak">
+        	<p class="alertBoxContent">当前积分有<font color="red" id="nowScore"></font>分</p>
+        	<a href="" class="alertBoxButton"></a>
+        	</div>
 			<!-- page wrapper starts -->
 			<div class="pageWrapper portfolioTwoPageWrapper">
-			
 
-			
-			<div class="sectionBreak"></div>
+
+
+				<div class="sectionBreak"></div>
 				<!-- portfolio wrapper starts -->
 				<div class="portfolioTwoWrapper" id="products">
 					<!-- portfolio item starts  -->
 					<!-- portfolio item ends -->
+
 				</div>
 				<!-- portfolio wrapper ends -->
 			</div>

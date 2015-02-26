@@ -17,6 +17,12 @@
 	   order by productId desc
 	</select> 
 	
+	<update id="updateNum" parameterType="java.util.HashMap">
+		update product set
+		num = #{num}
+		where productId = #{productId}
+    </update>
+	
 	<resultMap type="Product" id="productMap">
 		<id property="productId" column="productId" />
 		<result property="productPic" column="productPic" />

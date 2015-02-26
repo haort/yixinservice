@@ -42,7 +42,7 @@ public class ProductService {
 				c.setProductId(productId);
 				c.setWxId(wxId);
 				c.setCreateTime(DataFormat.formatDate(new Date()));
-				porderDao.addPorder(c);
+				
 				
 				Product p = productDao.findProductById(Integer.parseInt(productId));
 				if(p!=null){
@@ -58,6 +58,9 @@ public class ProductService {
 				if(u.getAddr()==null||"".equals(u.getAddr())){
 					u.setAddr(addr);
 				}
+				
+				productDao.updateNum(p.getProductId(), p.getNum()-1);
+				porderDao.addPorder(c);
 				userDao.updateUser(u);
 		}
 	}

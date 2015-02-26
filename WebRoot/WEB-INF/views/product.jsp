@@ -55,6 +55,7 @@
 					$('#contactForm')[0].reset();
 					$("#pProduct").colorbox.close();
 					getJf();
+					$("#productNum").html($("#productNum").html()-1);
 				}
 		});
 		</script>
@@ -77,7 +78,7 @@
 				<!-- page content wrapper starts -->
 				<div class="pageContentWrapper singleProjectContentWrapper">
 					<h3 class="pageTitle">
-						${productName}，剩余<font color="red">${num}</font>个
+						${productName}，剩余<font color="red" id="productNum">${num}</font>个
 					</h3>
 					<p>
 						${productDes}
