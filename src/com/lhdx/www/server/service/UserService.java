@@ -114,4 +114,14 @@ public class UserService {
 		} 
 		return map;
 	}
+	
+	public String findUserJfByWxId(String wxId) {
+		User u = userDao.findUserByWxId(wxId);
+		int jf = 0;
+		if(u!=null){
+			jf = u.getJf();
+		}
+		return  jf+"";
+	}
+	
 }

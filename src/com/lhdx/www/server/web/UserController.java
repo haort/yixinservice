@@ -57,4 +57,10 @@ public class UserController {
 		return map;
 	}
 	
+	@RequestMapping(value = "/getJf", method = RequestMethod.POST)
+	public @ResponseBody
+	String jfqd(@RequestParam("wxId") String wxId) {
+		return userService.findUserJfByWxId(wxId);
+	}
+	
 }

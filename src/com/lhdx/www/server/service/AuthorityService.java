@@ -14,8 +14,8 @@ public class AuthorityService {
 	private SaeMemcache mc;
 
 	public AuthorityService() {
-		mc = new SaeMemcache();
-		mc.init();
+//		mc = new SaeMemcache();
+//		mc.init();
 	}
 
 	public String getToken() {

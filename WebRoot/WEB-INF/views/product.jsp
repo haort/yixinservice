@@ -23,13 +23,11 @@
 		function getJf(){
 			$.ajax({     
 				type: 'post',     
-				url: "<%=request.getContextPath()%>/service/ifqd.do",
+				url: "<%=request.getContextPath()%>/service/getJf.do",
 				cache: false,  
 				data: "wxId=${wxId}",     
 				success: function(data){ 
-					if("true"==data.qd){
-					$("#nowScore").html(data.jf);
-					}
+					$("#nowScore").html(data);
 				}   
 			}); 
 		}
@@ -86,7 +84,7 @@
 					</p>
 					<p>
 						兑换需要
-						<font color="red">${productScore}</font>积分,您当前积分为<font color="red" id="nowScore">${nowScore}</font>分
+						<font color="red">${productScore}</font>积分,您当前积分为<font color="red" id="nowScore"></font>分
 					</p>
 					<div class="pageBreak"></div>
 				</div>
