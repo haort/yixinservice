@@ -331,13 +331,21 @@ public class WeixinService {
 					responsMessage = MessageUtil.newsMessageToXml(newsResp);
 				}
 			}else if ("B_JFSC".equals(eventKey)){
-				TextMessageResp textMessage = new TextMessageResp();
-				textMessage.setToUserName(message.getFromUserName());
-				textMessage.setFromUserName(message.getToUserName());
-				textMessage.setCreateTime(new Date().getTime());
-				textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
-				textMessage.setContent("签到获取积分可以兑换商品，积分商城正在建设，敬请期待。。。");
-				responsMessage = MessageUtil.textMessageToXml(textMessage);
+				Article article = new Article();
+				article.setTitle("积分商城");
+				article.setDescription("签到获得积分，可以兑换礼品");
+				article.setPicUrl("http://yixinservice.sinaapp.com/images/jfsc.png");
+				article.setUrl("http://yixinservice.sinaapp.com/service/getJfsc.do?wxId="+wxId);
+				List<Article> articleList = new ArrayList<Article>();
+				articleList.add(article);
+				NewsMessageResp newsResp = new NewsMessageResp();
+				newsResp.setCreateTime(new Date().getTime());
+				newsResp.setFromUserName(message.getToUserName());
+				newsResp.setToUserName(message.getFromUserName());
+				newsResp.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
+				newsResp.setArticleCount(articleList.size());
+				newsResp.setArticles(articleList);
+				responsMessage = MessageUtil.newsMessageToXml(newsResp);
 			}
 			
 		}else{

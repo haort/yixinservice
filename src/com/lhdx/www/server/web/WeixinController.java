@@ -29,12 +29,12 @@ public class WeixinController {
 	@ResponseBody
 	public String replyMessage(HttpServletRequest request){
 		//仅处理微信服务端发的请求
-//		return weixinService.coreService(request);
-		if (checkWeixinReques(request)) {
-			return weixinService.coreService(request);
-		}else{
-			return "error";
-		}
+		return weixinService.coreService(request);
+//		if (checkWeixinReques(request)) {
+//			return weixinService.coreService(request);
+//		}else{
+//			return "error";
+//		}
 	}
 	
 	

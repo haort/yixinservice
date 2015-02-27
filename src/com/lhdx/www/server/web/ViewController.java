@@ -100,12 +100,11 @@ public class ViewController {
 	}
 
 	@RequestMapping(value = "/getContact", method = RequestMethod.GET)
-	public ModelAndView getContact(String code) {
+	public ModelAndView getContact(String wxId) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("contact");
-		WeixinOauth2Token wo = authorityService.getOauth2AccessToken(code);
-		if (wo != null) {
-			mv.addObject("wxId", wo.getOpenId());
+		if (wxId != null && !"".equals(wxId)) {
+			mv.addObject("wxId", wxId);
 		}
 		return mv;
 	}
@@ -155,12 +154,11 @@ public class ViewController {
 	}
 
 	@RequestMapping(value = "/getQd", method = RequestMethod.GET)
-	public ModelAndView getQd(String code) {
+	public ModelAndView getQd(String wxId) {
 		ModelAndView mv = new ModelAndView();
 		mv.setViewName("qd");
-		WeixinOauth2Token wo = authorityService.getOauth2AccessToken(code);
-		if (wo != null) {
-			mv.addObject("wxId", wo.getOpenId());
+		if (wxId != null && !"".equals(wxId)) {
+			mv.addObject("wxId", wxId);
 		}
 		return mv;
 	}
