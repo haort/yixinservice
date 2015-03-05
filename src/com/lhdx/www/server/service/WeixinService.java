@@ -143,22 +143,6 @@ public class WeixinService {
 					responsContent = getOtherReply();
 				}
 			}
-		}else{
-			Article article = new Article();
-			article.setTitle("帮助信息");
-			article.setDescription("请查看帮助！");
-			article.setPicUrl("http://yixinservice.sinaapp.com/images/hp.png");
-			article.setUrl("http://yixinservice.sinaapp.com/service/getHelp.do");
-			List<Article> articleList = new ArrayList<Article>();
-			articleList.add(article);
-			NewsMessageResp newsResp = new NewsMessageResp();
-			newsResp.setCreateTime(new Date().getTime());
-			newsResp.setFromUserName(message.getToUserName());
-			newsResp.setToUserName(message.getFromUserName());
-			newsResp.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-			newsResp.setArticleCount(articleList.size());
-			newsResp.setArticles(articleList);
-			return MessageUtil.newsMessageToXml(newsResp);
 		}
 		}
 		textMessage.setContent(responsContent);
@@ -175,21 +159,13 @@ public class WeixinService {
 	 * @param fromUserName
 	 */
 	String doDingYueEventResponse(Message message){
-		Article article = new Article();
-		article.setTitle("帮助信息");
-		article.setDescription("请查看帮助！");
-		article.setPicUrl("http://yixinservice.sinaapp.com/images/hp.png");
-		article.setUrl("http://yixinservice.sinaapp.com/service/getHelp.do");
-		List<Article> articleList = new ArrayList<Article>();
-		articleList.add(article);
-		NewsMessageResp newsResp = new NewsMessageResp();
-		newsResp.setCreateTime(new Date().getTime());
-		newsResp.setFromUserName(message.getToUserName());
-		newsResp.setToUserName(message.getFromUserName());
-		newsResp.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_NEWS);
-		newsResp.setArticleCount(articleList.size());
-		newsResp.setArticles(articleList);
-		return MessageUtil.newsMessageToXml(newsResp);
+		TextMessageResp textMessage = new TextMessageResp();
+		textMessage.setToUserName(message.getFromUserName());
+		textMessage.setFromUserName(message.getToUserName());
+		textMessage.setCreateTime(new Date().getTime());
+		textMessage.setMsgType(MessageUtil.RESP_MESSAGE_TYPE_TEXT);
+		textMessage.setContent("订阅成功，太湖世家将为您提供更优质的服务，请点击相关菜单获得了解更多内容！");
+		return  MessageUtil.textMessageToXml(textMessage);
 	}
 	
 	/**

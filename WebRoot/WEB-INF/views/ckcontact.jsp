@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>太湖世家物业管理有限公司</title>
+		<title>太湖世家物业</title>
 		<!-- meta tags start -->
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport"
