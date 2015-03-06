@@ -11,7 +11,11 @@
 		<!-- meta tags end -->
 		<%@include file="/WEB-INF/views/common/css.jsp"%>
 		<%@include file="/WEB-INF/views/common/js.jsp"%>
-
+		<script type="text/javascript">
+			$(document).ready(function() {
+			$('#mainSlider').nivoSlider({controlNav: false,prevText: '',nextText: '' });
+			});
+	</script>
 	</head>
 
 	<body>

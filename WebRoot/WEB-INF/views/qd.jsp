@@ -51,7 +51,7 @@
 		        success: function(data){ 
 		        	if("false"==data.qd){
 				      $(".singer_r_img").addClass("current");
-				      $("#jf").html("当前积分<font color='red'>"+data.jf+"</font>分");
+				      $("#nowScore").html(+data.jf);
 			      	  week();
 					$("#jfqd").show();
 					$(".singer_r_img").click(function(e){
@@ -59,7 +59,7 @@
 						WeixinJSBridge.invoke('closeWindow',{},function(res){});
 					});
 		        	}else{
-		        	$("#jf").html("当前积分<font color='red'>"+data.jf+"</font>分");
+		        	$("#nowScore").html(+data.jf);
 			        week();
 					$("#jfqd").show();
 					$(".singer_r_img").click(function(e){
@@ -80,7 +80,7 @@
 										});
 										e.stopPropagation();
 									    $(".singer_r_img").addClass("current");
-									    $("#jf").html("当前积分<font color='red'>"+data.jf+"</font>分");
+									    $("#nowScore").html(+data.jf);
 							        	}else{
 							        		alert("您今天已签到，请明天再来");
 							        		WeixinJSBridge.invoke('closeWindow',{},function(res){});
@@ -98,6 +98,24 @@
 		            return;     
 		        }     
 		    });
+		    
+		    	$.ajax({     
+		        type: 'post',     
+		        url: "<%=request.getContextPath()%>/service/findProducts.do",
+		        cache: false,       
+		        dataType: 'json',     
+		        success: function(data){ 
+		        	var products="";   
+		            jQuery.each(data, function(i,item){
+				      products+="<a href='<%=request.getContextPath()%>/service/getProduct.do?productId="+item.productId+"&wxId=${wxId}&nowScore="+$('#nowScore').html()+"'><img src='<%=request.getContextPath()%>/images/"+item.productPic+"' alt=''/> </a>"
+		            });   
+		            $("#mainSlider").append(products);
+		            $('#mainSlider').nivoSlider({controlNav: false,prevText: '',nextText: '' });
+		        },     
+		        error: function(){     
+		            return;     
+		        }     
+		    }); 
 	
 			});
 	</script>
@@ -109,13 +127,18 @@
 			<!-- header wrapper starts -->
 			<%@include file="/WEB-INF/views/common/header.jsp"%>
 			<!-- header wrapper ends -->
-
+        	<div class="sliderOuterWrapper">
+				<div class="sliderWrapper">
+					<div class="mainSlider" id="mainSlider">
+					</div>
+				</div>
+			</div>
 			<!-- page wrapper starts -->
 			<div class="pageWrapper contactPageWrapper">
 			<div class="sectionBreak"></div>
 				<div class="singer" style="display: none" id="jfqd"> 
 					<div class="singer_l_cont">
-						<span id="jf"></span>
+						<span>当前积分<font color='red' id="nowScore"></font>分</span>
 					</div>
 					<div class="singer_r_r">
 						<a class="singer_r_img" href="#">		
